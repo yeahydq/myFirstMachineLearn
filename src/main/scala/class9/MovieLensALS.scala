@@ -37,13 +37,15 @@ object MovieLensALS {
     val movieLensHomeDir = args(0)
 
     // 装载样本评分数据，其中最后一列Timestamp取除10的余数作为key，Rating为值,即(Int,Rating)
-    val ratings = sc.textFile(new File(movieLensHomeDir, "ratings.dat").toString).map { line =>
+//    val ratings = sc.textFile(new File(movieLensHomeDir, "ratings.dat").toString).map { line =>
+      val ratings = sc.textFile(movieLensHomeDir+"ratings.dat",1).map { line =>
       val fields = line.split("::")
       (fields(3).toLong % 10, Rating(fields(0).toInt, fields(1).toInt, fields(2).toDouble))
     }
 
     // 装载电影目录对照表（电影ID->电影标题）
-    val movies = sc.textFile(new File(movieLensHomeDir, "movies.dat").toString).map { line =>
+//    val movies = sc.textFile(new File(movieLensHomeDir, "movies.dat").toString).map { line =>
+      val movies = sc.textFile(movieLensHomeDir+ "movies.dat",1).map { line =>
       val fields = line.split("::")
       (fields(0).toInt, fields(1))
     }.collect().toMap
